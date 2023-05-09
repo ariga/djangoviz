@@ -54,10 +54,10 @@ table "test_table" {
         out = StringIO()
         management.call_command("djangoviz", stdout=out)
         sql_statements = (
-            'BEGIN;\n--\n-- Create model PriceHistory\n--\nCREATE TABLE "app2_pricehistory" ("id" integer NOT NULL '
+            'BEGIN;\n--\n-- Create model PriceHistory\n--\nCREATE TABLE "app1_pricehistory" ("id" integer NOT NULL '
             'PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, "price" decimal NOT NULL, "volume" integer unsigned '
             'NOT NULL CHECK ("volume" >= 0));\nCOMMIT;\nBEGIN;\n--\n-- Create model PriceHistory\n--\nCREATE TABLE '
-            '"app1_pricehistory" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, '
+            '"app2_pricehistory" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date" datetime NOT NULL, '
             '"price" decimal NOT NULL, "volume" integer unsigned NOT NULL CHECK ("volume" >= 0));\nCOMMIT;\n'
         )
         mock_execute.assert_has_calls(

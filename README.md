@@ -1,6 +1,6 @@
 # djangoviz
 
-Visualize DjangoViz schemas with beautiful ERDs on [atlasgo.cloud](https://gh.atlasgo.cloud)
+DjangoViz is a Django app that helps you visualize your models and their relationships using [Atlas Cloud](https://gh.atlasgo.cloud).
 
 ![alt text](https://entgo.io/images/assets/erd/edges-quick-summary.png)
 
@@ -31,6 +31,9 @@ INSTALLED_APPS = [
 
 ```bash
 python manage.py djangoviz
+```
+```python
+'Visualization is shared here: https://gh.atlasgo.cloud/explore/13b2e709'
 ```
 
 This command will create a visual representation of your projects database schema using Atlas Cloud. You can now easily view and explore the relationships between your models.
