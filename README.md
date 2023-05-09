@@ -2,6 +2,8 @@
 
 Visualize DjangoViz schemas with beautiful ERDs on [atlasgo.cloud](https://gh.atlasgo.cloud)
 
+![alt text](https://entgo.io/images/assets/erd/edges-quick-summary.png)
+
 
 ## Installation
 
