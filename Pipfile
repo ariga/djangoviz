@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.2"
+graphqlclient = "==0.2.4"
+
+[dev-packages]
+build = "*"
+
+[requires]
+python_version = "3.9"
