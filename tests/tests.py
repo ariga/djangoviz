@@ -74,7 +74,7 @@ table "test_table" {
             + BaseCommand().style.SUCCESS(f"Migrations for app 'app1'")
             + "\n"
             + BaseCommand().style.SUCCESS(
-                f"Visualization is shared here: https://gh.atlasgo.link/explore/first_extID"
+                f"Visualization is shared here: https://gh.atlasgo.cloud/explore/first_extID"
             )
             + "\n"
         )

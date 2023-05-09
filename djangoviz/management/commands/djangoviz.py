@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 from django.db.migrations.loader import MigrationLoader
 from graphqlclient import GraphQLClient
 
-HOST = "https://gh.atlasgo.link"
+HOST = "https://gh.atlasgo.cloud"
 API_ENDPOINT = f"{HOST}/api/query"
 UI_ENDPOINT = f"{HOST}/explore"
 VERSION = "0.0.1"
