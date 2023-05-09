@@ -1,6 +1,6 @@
-# Atlas Cloud DjangoViz
+# djangoviz
 
-Atlas Cloud DjangoViz is a Django app that helps you visualize your models and their relationships using the [Atlas Cloud service](https://gh.atlasgo.cloud).
+Visualize DjangoViz schemas with beautiful ERDs on [atlasgo.cloud](https://gh.atlasgo.cloud)
 
 Get started quickly by following these steps:
 

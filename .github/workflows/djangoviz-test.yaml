@@ -1,0 +1,30 @@
+name: Test Djangoviz
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - run: pip install pipenv
+    - name: Cache virtualenvs
+      uses: actions/cache@v2
+      with:
+          path: ~/.local/share/virtualenvs/
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+    - name: Install dependencies
+      run: pipenv sync --dev
+    - name: Test
+      run: pipenv run python run_tests.py
