@@ -2,7 +2,6 @@
 
 Visualize DjangoViz schemas with beautiful ERDs on [atlasgo.cloud](https://gh.atlasgo.cloud)
 
-Get started quickly by following these steps:
 
 ## Installation
 
