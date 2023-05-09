@@ -19,12 +19,8 @@ jobs:
       with:
         python-version: '3.9'
         cache: 'pipenv'
-    - run: pip install pipenv
-    - name: Cache virtualenvs
-      uses: actions/cache@v2
-      with:
-          path: ~/.local/share/virtualenvs/
-          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+    - name: Install pipenv
+      run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
     - name: Install dependencies
       run: pipenv sync --dev
     - name: Test
