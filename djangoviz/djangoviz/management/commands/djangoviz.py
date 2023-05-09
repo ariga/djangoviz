@@ -27,7 +27,7 @@ def _get_ordered_app_configs():
         for model in app_config.get_models():
             for field in model._meta.get_fields():
                 if field.is_relation and field.related_model:
-                    related_app_label = field.related_model._meta.app_label
+                    related_app_label = field.related_model._meta.app_config.name
                     if (
                         related_app_label != app_config.name
                         and related_app_label not in dependencies[app_config.name]
@@ -52,7 +52,7 @@ def _get_ordered_app_configs():
     while stack:
         ordered_app_configs.append(stack.pop())
 
-    return ordered_app_configs
+    return ordered_app_configs[::-1]
 
 
 def _get_db_driver():
