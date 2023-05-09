@@ -69,11 +69,7 @@ table "test_table" {
         )
 
         expected_output = (
-            BaseCommand().style.SUCCESS(f"Migrations for app 'app2'")
-            + "\n"
-            + BaseCommand().style.SUCCESS(f"Migrations for app 'app1'")
-            + "\n"
-            + BaseCommand().style.SUCCESS(
+            BaseCommand().style.SUCCESS(
                 f"Visualization is shared here: https://gh.atlasgo.cloud/explore/first_extID"
             )
             + "\n"

@@ -9,6 +9,7 @@ graphqlclient = "==0.2.4"
 
 [dev-packages]
 build = "*"
+black = "*"
 
 [requires]
 python_version = "3.9"

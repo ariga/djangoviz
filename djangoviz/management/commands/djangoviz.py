@@ -201,9 +201,6 @@ class Command(BaseCommand):
                 if migration_name[0] == app_name
             ]
             if app_migrations:
-                self.stdout.write(
-                    self.style.SUCCESS(f"Migrations for app '{app_name}'")
-                )
                 for migration_name, _ in sorted(app_migrations, key=lambda x: x[0][1]):
                     out = StringIO()
                     call_command(
