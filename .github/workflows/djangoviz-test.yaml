@@ -1,0 +1,29 @@
+name: Test Djangoviz
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pipenv'
+    - name: Install pipenv
+      run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+    - name: Install dependencies
+      run: pipenv sync --dev
+    - name: Check formatting
+      run: pipenv run python -m black . --check
+    - name: Test
+      run: pipenv run python run_tests.py
