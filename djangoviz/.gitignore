@@ -1,8 +1,0 @@
-__pycache__
-*.pyc
-*.egg-info
-*.sqlite3
-.eggs
-.coverage
-build
-dist
