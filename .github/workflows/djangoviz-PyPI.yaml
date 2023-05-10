@@ -2,10 +2,6 @@ in name: Upload Djangoviz Python Package to PyPI
 
 on:
   workflow_dispatch:
-    inputs:
-      production-pypi:
-        type: boolean
-        description: "Should this deployment go to PyPI?"
   push:
     branches:
       - master
@@ -34,4 +30,4 @@ jobs:
         repository-url: https://test.pypi.org/legacy/
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@v1.4.2
-      if: github.event.inputs.production-pypi == 'true'
+      if: startsWith(github.ref, 'refs/tags/')
