@@ -1,4 +1,4 @@
-name: Test Djangoviz
+name: ci
 
 on:
   workflow_dispatch:
@@ -13,7 +13,6 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v3
-
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
