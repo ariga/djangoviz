@@ -48,6 +48,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "django>=2.2",
+        "graphqlclient>=0.2.4",
     ],
     tests_require=[],
     extras_require={},
