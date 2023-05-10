@@ -1,4 +1,4 @@
-in name: Upload Djangoviz Python Package to PyPI
+name: cd-pypi
 
 on:
   workflow_dispatch:
