@@ -16,6 +16,7 @@ setup(
     version="0.0.1",
     description="A visualization tool.",
     long_description=README,
+    long_description_content_type='text/markdown',
     classifiers=[
         # See https://pypi.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 5 - Production/Stable",
