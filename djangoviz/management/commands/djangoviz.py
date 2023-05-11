@@ -1,8 +1,6 @@
 import json
-from collections import deque
 from io import StringIO
 
-from django.apps import apps
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
@@ -181,7 +179,7 @@ class Command(BaseCommand):
             except Exception as e:
                 self.stdout.write(
                     self.style.ERROR(
-                        f"failed to get migration {app_name} {migration_name}"
+                        f"failed to get migration {app_name} {migration_name}, {e}"
                     )
                 )
         return migrations
