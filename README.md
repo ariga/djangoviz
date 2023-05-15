@@ -32,8 +32,9 @@ INSTALLED_APPS = [
 ```bash
 python manage.py djangoviz
 ```
+
 ```python
-'Visualization is shared here: https://gh.atlasgo.cloud/explore/13b2e709'
+'Here is a public link to your schema visualization: https://gh.atlasgo.cloud/explore/13b2e709'
 ```
 
 This command will create a visual representation of your projects database schema using Atlas Cloud. You can now easily view and explore the relationships between your models.

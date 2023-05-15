@@ -70,7 +70,7 @@ table "test_table" {
 
         expected_output = (
             BaseCommand().style.SUCCESS(
-                f"Visualization is shared here: https://gh.atlasgo.cloud/explore/first_extID"
+                f"Here is a public link to your schema visualization: https://gh.atlasgo.cloud/explore/first_extID"
             )
             + "\n"
         )
