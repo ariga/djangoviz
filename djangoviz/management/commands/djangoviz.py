@@ -158,7 +158,7 @@ class Command(BaseCommand):
                 return
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"Visualization is shared here: {UI_ENDPOINT}/{ext_id}"
+                    f"Here is a public link to your schema visualization: {UI_ENDPOINT}/{ext_id}"
                 )
             )
         except Exception as e:
