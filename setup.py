@@ -14,7 +14,6 @@ with io.open(os.path.join(here, "README.md"), encoding="utf-8") as fp:
 setup(
     name="djangoviz",
     use_scm_version={
-        "version_scheme": "release-branch-semver",
         "local_scheme": "no-local-version",
     },
     setup_requires=["setuptools_scm"],
