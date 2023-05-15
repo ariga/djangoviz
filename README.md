@@ -19,7 +19,7 @@ pip install djangoviz
 
 ```python
 INSTALLED_APPS = [
-    ...
+    ...,
     'djangoviz',
     ...
 ]

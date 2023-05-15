@@ -13,9 +13,14 @@ with io.open(os.path.join(here, "README.md"), encoding="utf-8") as fp:
 
 setup(
     name="djangoviz",
-    version="0.0.1",
+    use_scm_version={
+        "version_scheme": "release-branch-semver",
+        "local_scheme": "no-local-version",
+    },
+    setup_requires=["setuptools_scm"],
     description="A visualization tool.",
     long_description=README,
+    long_description_content_type="text/markdown",
     classifiers=[
         # See https://pypi.org/pypi?%3Aaction=list_classifiers
         "Development Status :: 5 - Production/Stable",
@@ -31,17 +36,16 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Utilities",
-        "License :: OSI Approved :: Apache License",
+        "License :: OSI Approved :: Apache Software License",
     ],
     keywords="django erd visualization",
     author="Yoni Davidson",
     author_email="y@ariga.io",
     url="https://github.com/ariga/djangoviz",
-    license="MIT",
+    license="Apache License 2.0",
     packages=find_packages(exclude=["tests*"]),
     platforms=["any"],
     zip_safe=True,
