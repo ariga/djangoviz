@@ -7,11 +7,17 @@ from django.core.management.base import BaseCommand
 from django.db import connections
 from django.db.migrations.loader import MigrationLoader
 from graphqlclient import GraphQLClient
+from pkg_resources import get_distribution, DistributionNotFound
 
 HOST = "https://gh.atlasgo.cloud"
 API_ENDPOINT = f"{HOST}/api/query"
 UI_ENDPOINT = f"{HOST}/explore"
-VERSION = "0.0.2"
+try:
+    # Change 'Your-Package-Name' to the name of your package
+    dist_name = "djangoviz"
+    __version__ = get_distribution(dist_name).version
+except DistributionNotFound:
+    __version__ = "unknown"
 
 
 def _order_migrations_by_dependency():
@@ -123,7 +129,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("no migrations found"))
             return
         client = GraphQLClient(endpoint=API_ENDPOINT)
-        client.inject_token("user-agent", f"djangoviz/{VERSION}")
+        client.inject_token("user-agent", f"djangoviz/{__version__}")
         try:
             atlas_schema = _get_atlas_schema(client, migrations, db_driver)
             if atlas_schema is None:
