@@ -1,11 +1,10 @@
 import json
-from collections import deque
 from io import StringIO
 
-from django.apps import apps
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+from django.db import connections
 from django.db.migrations.loader import MigrationLoader
 from graphqlclient import GraphQLClient
 from pkg_resources import get_distribution, DistributionNotFound
@@ -21,44 +20,17 @@ except DistributionNotFound:
     __version__ = "unknown"
 
 
-def _get_ordered_app_configs():
-    app_configs = apps.get_app_configs()
-    app_configs_dict = {app_config.name: app_config for app_config in app_configs}
+def _order_migrations_by_dependency():
+    connection = connections["default"]
+    loader = MigrationLoader(connection)
+    graph = loader.graph
 
-    dependencies = {}
+    # Get all nodes in the graph
+    all_nodes = graph.nodes
 
-    # Iterate through each AppConfig and collect its dependencies
-    for app_config in app_configs:
-        dependencies[app_config.name] = []
-        for model in app_config.get_models():
-            for field in model._meta.get_fields():
-                if field.is_relation and field.related_model:
-                    related_app_label = field.related_model._meta.app_config.name
-                    if (
-                        related_app_label != app_config.name
-                        and related_app_label not in dependencies[app_config.name]
-                    ):
-                        dependencies[app_config.name].append(related_app_label)
-
-    # Perform topological sort to order AppConfigs based on dependencies
-    ordered_app_configs = []
-    visited = set()
-    stack = deque()
-
-    def visit(app_name):
-        if app_name not in visited:
-            visited.add(app_name)
-            for dependency in dependencies[app_name]:
-                visit(dependency)
-            stack.append(app_configs_dict[app_name])
-
-    for app_name in app_configs_dict.keys():
-        visit(app_name)
-
-    while stack:
-        ordered_app_configs.append(stack.pop())
-
-    return ordered_app_configs[::-1]
+    # Generate a plan for all nodes
+    plan = graph._generate_plan(nodes=all_nodes, at_end=True)
+    return plan
 
 
 def _get_db_driver():
@@ -198,21 +170,24 @@ class Command(BaseCommand):
         migration_loader = MigrationLoader(None, ignore_no_migrations=True)
         migration_loader.load_disk()
         migrations = ""
-        app_configs = _get_ordered_app_configs()
-        for app_config in app_configs:
-            app_name = app_config.name.split(".")[-1]
-            app_migrations = [
-                (migration_name, migration_loader.disk_migrations[migration_name])
-                for migration_name in migration_loader.graph.nodes
-                if migration_name[0] == app_name
-            ]
-            if app_migrations:
-                for migration_name, _ in sorted(app_migrations, key=lambda x: x[0][1]):
-                    out = StringIO()
-                    call_command(
-                        "sqlmigrate", migration_name, stdout=out, stderr=StringIO()
+        ordered_migrations = _order_migrations_by_dependency()
+        for app_name, migration_name in ordered_migrations:
+            try:
+                out = StringIO()
+                call_command(
+                    "sqlmigrate",
+                    app_name,
+                    migration_name,
+                    stdout=out,
+                    stderr=StringIO(),
+                )
+                migrations += out.getvalue()
+            except Exception as e:
+                self.stdout.write(
+                    self.style.ERROR(
+                        f"failed to get migration {app_name} {migration_name}, {e}"
                     )
-                    migrations += out.getvalue()
+                )
         return migrations
 
 
