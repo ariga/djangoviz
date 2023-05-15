@@ -63,7 +63,7 @@ def _get_db_driver():
     if "mysql" in engine_parts:
         return "MYSQL"
     if "postgresql" in engine_parts:
-        return "POSTGRES"
+        return "POSTGRESQL"
     if "sqlite3" in engine_parts:
         return "SQLITE"
     raise Exception(f"Error reading database driver: {database_engine}")
