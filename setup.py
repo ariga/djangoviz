@@ -13,7 +13,11 @@ with io.open(os.path.join(here, "README.md"), encoding="utf-8") as fp:
 
 setup(
     name="djangoviz",
-    version="0.0.1",
+    use_scm_version={
+        "version_scheme": "release-branch-semver",
+        "local_scheme": "no-local-version",
+    },
+    setup_requires=["setuptools_scm"],
     description="A visualization tool.",
     long_description=README,
     long_description_content_type="text/markdown",

@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "==4.2"
 graphqlclient = "==0.2.4"
+install = "*"
+setuptools-scm = "*"
 
 [dev-packages]
 build = "*"
