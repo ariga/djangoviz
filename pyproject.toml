@@ -3,6 +3,7 @@ requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.2"]
 
 [project]
 name = "djangoviz"
+requires-python = ">=3.6.0"
 dynamic = ["version"]
 description = "A visualization tool."
 readme = "README.md"
@@ -28,7 +29,6 @@ classifiers = [
 ]
 keywords = ["django", "erd", "visualization"]
 dependencies = [
-    'python >= 3.6.0',
     'django >= 2.2.0',
     'graphqlclient >= 0.2.0',
 ]
