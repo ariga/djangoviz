@@ -115,7 +115,7 @@ class Command(BaseCommand):
         db_driver = _get_db_driver()
         migrations = self._get_migrations()
         if not migrations:
-            self.stdout.write(self.style.ERROR("no migrations found"))
+            self.stderr.write(self.style.ERROR("no migrations found"))
             return
         client = GraphQLClient(endpoint=API_ENDPOINT)
         client.inject_token("user-agent", f"djangoviz/{__version__}")

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=6.2"]
+
+[project]
+name = "djangoviz"
+dynamic = ["version"]
+description = "A visualization tool."
+readme = "README.md"
+authors = [{ name = "Yoni Davidson", email = "y@ariga.io" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Framework :: Django",
+    "Framework :: Django :: 2.2",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: Apache Software License",
+]
+keywords = ["django", "erd", "visualization"]
+dependencies = [
+    'python >= 3.6.0',
+    'django >= 2.2.0',
+    'graphqlclient >= 0.2.0',
+]
+[project.urls]
+Homepage = "https://github.com/ariga/djangoviz"
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
