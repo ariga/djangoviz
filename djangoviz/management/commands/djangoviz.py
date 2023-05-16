@@ -1,4 +1,5 @@
 import json
+import os
 from io import StringIO
 
 from django.conf import settings
@@ -9,11 +10,10 @@ from django.db.migrations.loader import MigrationLoader
 from graphqlclient import GraphQLClient
 from pkg_resources import get_distribution, DistributionNotFound
 
-HOST = "https://gh.atlasgo.cloud"
+HOST = os.getenv("DJANGOVIZ_HOST", "https://gh.atlasgo.cloud")
 API_ENDPOINT = f"{HOST}/api/query"
 UI_ENDPOINT = f"{HOST}/explore"
 try:
-    # Change 'Your-Package-Name' to the name of your package
     dist_name = "djangoviz"
     __version__ = get_distribution(dist_name).version
 except DistributionNotFound:
@@ -34,16 +34,16 @@ def _order_migrations_by_dependency():
 
 
 def _get_db_driver():
-    database_engine = settings.DATABASES.get("default", {}).get("ENGINE")
-    if database_engine is None:
+    engine = settings.DATABASES.get("default", {}).get("ENGINE")
+    if engine is None:
         raise KeyError(...)
-    if "mysql" in database_engine:
+    if "mysql" in engine:
         return "MYSQL"
-    if "postgresql" in database_engine:
+    if "postgresql" in engine:
         return "POSTGRESQL"
-    if "sqlite3" in database_engine:
+    if "sqlite3" in engine:
         return "SQLITE"
-    raise Exception(f"Error reading database driver: {database_engine}")
+    raise ValueError(f"Error reading database driver: {engine}")
 
 
 def _share_visualization(client, ext_id):
@@ -57,14 +57,7 @@ def _share_visualization(client, ext_id):
     variables = {
         "fromID": ext_id,
     }
-
-    result = client.execute(mutation, variables)
-    try:
-        result_json = json.loads(result)
-    except json.JSONDecodeError:
-        raise CustomGraphQLError(f"Error in GraphQL query: {result}")
-    if "errors" in result_json:
-        raise CustomGraphQLError(f"Error in GraphQL query: {result_json['errors']}")
+    result_json = get_result(client, mutation, variables)
     return result_json.get("data", {}).get("shareVisualization", {}).get("success")
 
 
@@ -80,14 +73,7 @@ def _visualize_schema(client, schema, driver):
     """
 
     variables = {"text": schema, "driver": driver}
-
-    result = client.execute(mutation, variables)
-    try:
-        result_json = json.loads(result)
-    except json.JSONDecodeError:
-        raise CustomGraphQLError(f"Error in GraphQL query: {result}")
-    if "errors" in result_json:
-        raise CustomGraphQLError(f"Error in GraphQL query: {result_json['errors']}")
+    result_json = get_result(client, mutation, variables)
     ext_id = (
         result_json.get("data", {}).get("visualize", {}).get("node", {}).get("extID")
     )
@@ -106,16 +92,20 @@ def _get_atlas_schema(client, schema, driver):
         """
 
     variables = {"text": schema, "driver": driver}
+    result_json = get_result(client, mutation, variables)
+    schema = result_json.get("data", {}).get("visualize", {}).get("node", {}).get("hcl")
+    return schema
 
+
+def get_result(client, mutation, variables):
     result = client.execute(mutation, variables)
     try:
         result_json = json.loads(result)
     except json.JSONDecodeError:
-        raise CustomGraphQLError(f"Error in GraphQL query: {result}")
+        raise GraphQLError(f"Error in GraphQL query: {result}")
     if "errors" in result_json:
-        raise CustomGraphQLError(f"Error in GraphQL query: {result_json['errors']}")
-    schema = result_json.get("data", {}).get("visualize", {}).get("node", {}).get("hcl")
-    return schema
+        raise GraphQLError(f"Error in GraphQL query: {result_json['errors']}")
+    return result_json
 
 
 class Command(BaseCommand):
@@ -124,7 +114,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         db_driver = _get_db_driver()
         migrations = self._get_migrations()
-        if migrations == "":
+        if not migrations:
             self.stdout.write(self.style.ERROR("no migrations found"))
             return
         client = GraphQLClient(endpoint=API_ENDPOINT)
@@ -146,7 +136,7 @@ class Command(BaseCommand):
                 )
                 return
         except Exception as e:
-            self.stdout.write(self.style.ERROR("failed to visualize schema"))
+            self.stderr.write(self.style.ERROR("failed to visualize schema"))
             self.stderr.write(str(e))
             return
         try:
@@ -182,7 +172,7 @@ class Command(BaseCommand):
                 )
                 migrations += out.getvalue()
             except Exception as e:
-                self.stdout.write(
+                self.stderr.write(
                     self.style.ERROR(
                         f"failed to get migration {app_name} {migration_name}, {e}"
                     )
@@ -190,5 +180,5 @@ class Command(BaseCommand):
         return migrations
 
 
-class CustomGraphQLError(Exception):
-    ...
+class GraphQLError(Exception):
+    pass
