@@ -37,12 +37,11 @@ def _get_db_driver():
     database_engine = settings.DATABASES.get("default", {}).get("ENGINE")
     if database_engine is None:
         raise KeyError(...)
-    engine_parts = database_engine.split(".")
-    if "mysql" in engine_parts:
+    if "mysql" in database_engine:
         return "MYSQL"
-    if "postgresql" in engine_parts:
+    if "postgresql" in database_engine:
         return "POSTGRESQL"
-    if "sqlite3" in engine_parts:
+    if "sqlite3" in database_engine:
         return "SQLITE"
     raise Exception(f"Error reading database driver: {database_engine}")
 
