@@ -118,7 +118,7 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR("no migrations found"))
             return
         client = GraphQLClient(endpoint=API_ENDPOINT)
-        client.inject_token("user-agent", f"djangoviz/{__version__}")
+        client.inject_token(token=f"djangoviz/{__version__}", headername="user-agent")
         try:
             atlas_schema = _get_atlas_schema(client, migrations, db_driver)
             if atlas_schema is None:
