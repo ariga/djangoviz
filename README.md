@@ -4,6 +4,10 @@ DjangoViz is a Django app that helps you visualize your models and their relatio
 
 ![alt text](https://entgo.io/images/assets/erd/edges-quick-summary.png)
 
+> [!WARNING]
+> ## Deprecation Notice
+> This repository has been deprecated. Please refer to [Atlas Django Provider](https://github.com/ariga/atlas-provider-django#inspect) for Atlas Cloud integration.
+
 
 ## Installation
 
